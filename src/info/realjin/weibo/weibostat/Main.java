@@ -23,7 +23,7 @@ public class Main {
 	public static void initContext() {
 		ctx = new WeiboContext();
 
-		ctx.setAccessToken("2.00snTWXB0kYBzw6bc398f9900XHeqE");
+		ctx.setAccessToken("2.00snTWXB0kYBzwac89312018chynDC");
 
 		ctx.setTweetSaverBatchSize(100);
 
@@ -72,11 +72,11 @@ public class Main {
 	 */
 	public static void main_(String[] args) throws UnknownHostException,
 			MongoException {
-		saveTweets("1722594714");
+		// saveTweets("1189729754");
 		// analyzeTweetFreq("1721825977");
-		// checkTweetSavingStatus("1717857481");
+		// checkTweetSavingStatus("1189729754");
 		// checkTweetSavingStatus("1586260771");
-		checkTweetSavingStatus("1722594714");
+		// checkTweetSavingStatus("1722594714");
 		// testSaveUser("1765731810");
 	}
 

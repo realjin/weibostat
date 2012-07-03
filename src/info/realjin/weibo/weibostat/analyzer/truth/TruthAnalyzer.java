@@ -35,14 +35,15 @@ public class TruthAnalyzer {
 
 			line = dboTweet.get("text").toString();
 
-//			System.out.println(line);
+			// System.out.println(line);
 
 			pos = line.indexOf("真");
 
-
 			if (pos != -1) {
-				String around = line.substring(pos - 2, pos + 3);
-				System.out.println("======[" + pos + "] " + around);
+				String around = line.substring(pos - 2 >= 0 ? pos - 2 : 0,
+						pos + 3 > line.length() ? line.length() : pos + 3);
+				System.out.println("======[" + pos + "] @"
+						+ dboTweet.get("uidstr") + ": " + around);
 			}
 
 			// String strDate = dboTweet.get("created_at").toString();
