@@ -38,9 +38,11 @@ public class TweetSavingProgressChecker {
 					.asJSONObject();
 			int nTweets = jsoUser.getInt("statuses_count");
 
-			BasicDBObject query = new BasicDBObject();
+			BasicDBObject query;
+			DBCursor cur;
+			query = new BasicDBObject();
 			query.put("uidstr", strUid);
-			DBCursor cur = coll.find(query);
+			cur = coll.find(query);
 			int nTweetsSaved = 0;
 			while (cur.hasNext()) {
 				cur.next();
@@ -60,7 +62,10 @@ public class TweetSavingProgressChecker {
 			jso.put("updatetime", new Date().toString());
 			BasicDBObject dbo = (BasicDBObject) com.mongodb.util.JSON.parse(jso
 					.toString());
-			collUserEx.insert(dbo);
+
+			query = new BasicDBObject();
+			query.put("uidstr", strUid);
+			collUserEx.update(query, dbo, true, false);
 
 		} catch (WeiboException e) {
 			e.printStackTrace();

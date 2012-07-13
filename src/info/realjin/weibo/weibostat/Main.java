@@ -24,7 +24,7 @@ public class Main {
 	public static void initContext() {
 		ctx = new WeiboContext();
 
-		ctx.setAccessToken("2.00snTWXB0kYBzw662469731aJ9AIDE");
+		ctx.setAccessToken("2.00snTWXB0kYBzw1d49aed9c0PYh7vB");
 
 		ctx.setTweetSaverBatchSize(100);
 
@@ -54,7 +54,7 @@ public class Main {
 		initContext();
 	}
 
-	public static void main_(String[] args) throws UnknownHostException,
+	public static void main(String[] args) throws UnknownHostException,
 			MongoException {
 		TruthAnalyzer ta = new TruthAnalyzer(ctx);
 		UserSaver us = new UserSaver(ctx);
@@ -71,7 +71,7 @@ public class Main {
 	 * @throws MongoException
 	 * @throws UnknownHostException
 	 */
-	public static void main(String[] args) throws UnknownHostException,
+	public static void main_(String[] args) throws UnknownHostException,
 			MongoException {
 		// saveTweets("1267114595");
 		// analyzeTweetFreq("1267114595");
