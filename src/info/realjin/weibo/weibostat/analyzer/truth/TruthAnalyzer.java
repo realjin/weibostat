@@ -2,6 +2,9 @@ package info.realjin.weibo.weibostat.analyzer.truth;
 
 import info.realjin.weibo.weibostat.WeiboContext;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
@@ -19,6 +22,7 @@ public class TruthAnalyzer {
 	public void analyzeTruthFreq(String uid) {
 		String line;
 		int pos;
+		List<DBObject> result = new ArrayList<DBObject>();
 
 		Mongo m = ctx.getMongo();
 		DB db = m.getDB(ctx.getMongo_dbname());
@@ -42,23 +46,17 @@ public class TruthAnalyzer {
 			if (pos != -1) {
 				String around = line.substring(pos - 2 >= 0 ? pos - 2 : 0,
 						pos + 3 > line.length() ? line.length() : pos + 3);
-				System.out.println("======[" + pos + "] @"
-						+ dboTweet.get("uidstr") + ": " + around);
+				System.out.println("======#" + dboTweet.get("idstr") + "["
+						+ pos + "] @" + dboTweet.get("uidstr") + ": " + around);
+				result.add(dboTweet);
 			}
-
-			// String strDate = dboTweet.get("created_at").toString();
-			// System.out.println(strDate);
-			// Date date = dsl.Load(strDate);
-
-			// Calendar cal = Calendar.getInstance();
-			// cal.setTime(date);
-			//
-			// TweetTimestamp tts = new TweetTimestamp();
-			// tts.setYear(cal.get(Calendar.YEAR));
-			// tts.setDoy(cal.get(Calendar.DAY_OF_YEAR));
-			// tts.setHour(cal.get(Calendar.HOUR_OF_DAY));
-			// ttsList.add(tts);
 		}
+		
+		
+		
+		//remove the duplicate through n steps:
+		//1. remove tweets that have same rewteet idstr:
+		
 
 		// return ttsList;
 	}
