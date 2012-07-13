@@ -2,6 +2,12 @@ package info.realjin.weibo.weibostat.tweet;
 
 import info.realjin.weibo.weibostat.WeiboContext;
 import info.realjin.weibo.weibostat.analyzer.freq.DateStrLoader;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import weibo4j.Weibo;
 import weibo4j.model.PostParameter;
 import weibo4j.model.WeiboException;
@@ -13,6 +19,8 @@ import weibo4j.util.WeiboConfig;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
+import com.mongodb.DBCursor;
+import com.mongodb.DBObject;
 import com.mongodb.Mongo;
 
 public class TweetSaver {
@@ -35,16 +43,19 @@ public class TweetSaver {
 	}
 
 	private void saveByDate(String uid) {
-//		Weibo weibo = new Weibo();
-//		weibo.setToken(ctx.getAccessToken());
+		// Weibo weibo = new Weibo();
+		// weibo.setToken(ctx.getAccessToken());
 
 		Mongo m = ctx.getMongo();
 		DB db = m.getDB(ctx.getMongo_dbname());
 		DBCollection coll = db.getCollection(ctx.getMongo_collname_tweets());
 
 		JSONObject jsoTweets = null;
-		int flagDup = 0;
+		// int flagDup = 0;
 		int flagEnd = 0;
+
+		Set<String> savedTweetIds = getUserSavedTweetIds(uid);
+
 		try {
 			// get all tweets
 			for (int i = 0; i < 100; i++) {
@@ -61,7 +72,7 @@ public class TweetSaver {
 							.asJSONObject();
 				} catch (WeiboException e) {
 					i--;
-//					 e.printStackTrace();
+					// e.printStackTrace();
 					continue;
 				}
 
@@ -74,23 +85,29 @@ public class TweetSaver {
 					System.out
 							.println("-------------------------------------len0");
 					break;
-				}else	{
-					System.out
-					.println("===== round "+i+" ============");
+				} else {
+					System.out.println("===== round " + i + " ============");
 				}
 				// System.out.println("len=" + len);
 				DateStrLoader dsl = new DateStrLoader();
-				flagDup = 0;
+				// flagDup = 0;
 
 				for (int j = 0; j < len; j++) {
 					JSONObject jsoTweet = (JSONObject) jsa.get(j);
 
-					BasicDBObject query = new BasicDBObject();
-					query.put("id", jsoTweet.get("id"));
 					// check if dup
-					if (coll.find(query).hasNext()) {
-						flagDup = 1;
-						break;
+					// BasicDBObject query = new BasicDBObject();
+					// query.put("id", jsoTweet.get("id"));
+					// if (coll.find(query).hasNext()) {
+					// continue;
+					// }
+
+					// check if dup(method2)
+					String idstr = jsoTweet.get("idstr").toString();
+					// System.out.println("-----idstr-----" + idstr);
+					if (savedTweetIds.contains(idstr)) {
+						// System.out.println("**exist!=======================");
+						continue;
 					}
 
 					jsoTweet.put("uid",
@@ -100,15 +117,9 @@ public class TweetSaver {
 
 					BasicDBObject dboTweet = (BasicDBObject) com.mongodb.util.JSON
 							.parse(jsoTweet.toString());
+
 					coll.insert(dboTweet);
 
-					// coll.i
-
-					// Date d = dsl.Load(jsoPost.get("created_at").toString());
-					// Calendar cal = Calendar.getInstance();
-					// cal.setTime(d);
-					// System.out.println(cal.get(Calendar.DAY_OF_YEAR));
-					// System.out.println(jsoPost);
 				}
 			}
 
@@ -116,5 +127,34 @@ public class TweetSaver {
 			e.printStackTrace();
 		}
 
+	}
+
+	public Set<String> getUserSavedTweetIds(String uid) {
+		Mongo m = ctx.getMongo();
+		DB db = m.getDB(ctx.getMongo_dbname());
+		DBCollection coll = db.getCollection(ctx.getMongo_collname_tweets());
+
+		BasicDBObject query = new BasicDBObject();
+		query.put("uidstr", uid);
+		DBCursor cur = coll.find(query);
+
+		Set<String> savedTweetIds = new HashSet<String>();
+
+		// DateStrLoader dsl = new DateStrLoader();
+		// List<TweetTimestamp> ttsList = new ArrayList<TweetTimestamp>();
+		while (cur.hasNext()) {
+			DBObject dboTweet = cur.next();
+
+			// line = dboTweet.get("text").toString();
+
+			// System.out.println(line);
+
+			// pos = line.indexOf("真");
+
+			savedTweetIds.add(dboTweet.get("idstr").toString());
+
+		}
+
+		return savedTweetIds;
 	}
 }

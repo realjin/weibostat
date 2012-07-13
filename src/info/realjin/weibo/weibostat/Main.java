@@ -10,6 +10,7 @@ import info.realjin.weibo.weibostat.user.UserSaver;
 import java.io.File;
 import java.net.UnknownHostException;
 import java.util.List;
+import java.util.Set;
 
 import weibo4j.Weibo;
 
@@ -23,7 +24,7 @@ public class Main {
 	public static void initContext() {
 		ctx = new WeiboContext();
 
-		ctx.setAccessToken("2.00snTWXB0kYBzwac89312018chynDC");
+		ctx.setAccessToken("2.00snTWXB0kYBzw662469731aJ9AIDE");
 
 		ctx.setTweetSaverBatchSize(100);
 
@@ -53,7 +54,7 @@ public class Main {
 		initContext();
 	}
 
-	public static void main(String[] args) throws UnknownHostException,
+	public static void main_(String[] args) throws UnknownHostException,
 			MongoException {
 		TruthAnalyzer ta = new TruthAnalyzer(ctx);
 		UserSaver us = new UserSaver(ctx);
@@ -70,14 +71,21 @@ public class Main {
 	 * @throws MongoException
 	 * @throws UnknownHostException
 	 */
-	public static void main_(String[] args) throws UnknownHostException,
+	public static void main(String[] args) throws UnknownHostException,
 			MongoException {
-		// saveTweets("1189729754");
-		// analyzeTweetFreq("1721825977");
-		// checkTweetSavingStatus("1189729754");
+		// saveTweets("1267114595");
+		// analyzeTweetFreq("1267114595");
+		checkTweetSavingStatus("1267114595");
 		// checkTweetSavingStatus("1586260771");
 		// checkTweetSavingStatus("1722594714");
 		// testSaveUser("1765731810");
+
+		// TweetSaver ps = new TweetSaver(ctx);
+		// Set<String> tids = ps.getUserSavedTweetIds("1267114595");
+		//
+		// for (String s : tids) {
+		// System.out.println("tid: " + s);
+		// }
 	}
 
 	public static void testSaveUser(String uid) {
