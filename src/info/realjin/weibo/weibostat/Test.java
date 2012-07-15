@@ -28,7 +28,7 @@ import weibo4j.util.BareBonesBrowserLaunch;
 import weibo4j.util.WeiboConfig;
 
 public class Test {
-	static final String access_token = "2.00snTWXB0kYBzw1d49aed9c0PYh7vB";
+	static final String access_token = "2.00snTWXB0kYBzwa0ebedcea50C8QCL";
 	static final String uid = "1411492984";
 
 	public enum Month {

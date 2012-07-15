@@ -24,7 +24,7 @@ public class Main {
 	public static void initContext() {
 		ctx = new WeiboContext();
 
-		ctx.setAccessToken("2.00snTWXB0kYBzw1d49aed9c0PYh7vB");
+		ctx.setAccessToken("2.00snTWXB0kYBzwa0ebedcea50C8QCL");
 
 		ctx.setTweetSaverBatchSize(100);
 
@@ -54,7 +54,7 @@ public class Main {
 		initContext();
 	}
 
-	public static void main(String[] args) throws UnknownHostException,
+	public static void main_(String[] args) throws UnknownHostException,
 			MongoException {
 		TruthAnalyzer ta = new TruthAnalyzer(ctx);
 		UserSaver us = new UserSaver(ctx);
@@ -73,14 +73,21 @@ public class Main {
 	 * @throws MongoException
 	 * @throws UnknownHostException
 	 */
-	public static void main_(String[] args) throws UnknownHostException,
+	public static void main(String[] args) throws UnknownHostException,
 			MongoException {
-		// saveTweets("1267114595");
-		// analyzeTweetFreq("1267114595");
-		checkTweetSavingStatus("1267114595");
+		TruthAnalyzer ta = new TruthAnalyzer(ctx);
+		UserSaver us = new UserSaver(ctx);
+		String uid = "1657776532";
+
+		// saveTweets(uid);
+		// analyzeTweetFreq(uid);
+		// checkTweetSavingStatus(uid);
 		// checkTweetSavingStatus("1586260771");
 		// checkTweetSavingStatus("1722594714");
 		// testSaveUser("1765731810");
+
+		double score = ta.calcTruthDegree(uid);
+		System.out.println("user \"" + uid + "\": " + score);
 
 		// TweetSaver ps = new TweetSaver(ctx);
 		// Set<String> tids = ps.getUserSavedTweetIds("1267114595");
