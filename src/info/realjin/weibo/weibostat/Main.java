@@ -59,8 +59,10 @@ public class Main {
 		TruthAnalyzer ta = new TruthAnalyzer(ctx);
 		UserSaver us = new UserSaver(ctx);
 		List<String> uids = us.getSavedUids();
+		double score;
 		for (String uid : uids) {
-			ta.analyzeTruthFreq(uid);
+			score = ta.calcTruthDegree(uid);
+			System.out.println("user \"" + uid + "\": " + score);
 			// System.out.println(uid);
 		}
 
